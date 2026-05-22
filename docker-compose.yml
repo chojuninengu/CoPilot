@@ -7,9 +7,10 @@ services:
         ports:
             - "5000:5000"
         volumes:
-            - ./data/copilot-backend-data/logs:/opt/logs
+            - copilot-logs:/opt/logs
             # Mount the copilot.db file to persist the database
-            - ./data/data:/opt/copilot/backend/data
+            - copilot-data:/opt/copilot/backend/data
+            - ./backend/app:/opt/copilot/backend/app:ro
         env_file: .env
         depends_on:
             - copilot-mysql
@@ -17,11 +18,13 @@ services:
 
     copilot-frontend:
         image: ghcr.io/socfortress/copilot-frontend:latest
+        env_file: .env
         environment:
             - SERVER_HOST=${SERVER_HOST:-localhost} # Set the domain name of your server
+            - SERVER_PORT=${SERVER_PORT:-443}
         ports:
-            - "80:80"
-            - "443:443"
+            - "8081:80"
+            - "8443:443"
         restart: always
 
     # ! Optional Customer Portal Service ! #
@@ -54,7 +57,7 @@ services:
         ports:
             - "9000:9000"
         volumes:
-            - ./data/data/minio-data:/data
+            - minio-data:/data
         command: server /data --console-address ":9001"
         restart: always
 
@@ -140,6 +143,9 @@ services:
 
 volumes:
     mysql-data:
+    copilot-logs:
+    copilot-data:
+    minio-data:
 
 networks:
     default:

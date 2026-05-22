@@ -12,8 +12,8 @@ class WazuhGroup(BaseModel):
 
     name: str = Field(..., description="Group name")
     count: int = Field(..., description="Number of agents belonging to the group")
-    mergedSum: str = Field(..., description="Checksum of merged configuration files")
-    configSum: str = Field(..., description="Checksum of configuration files")
+    mergedSum: Optional[str] = Field(None, description="Checksum of merged configuration files")
+    configSum: Optional[str] = Field(None, description="Checksum of configuration files")
     model_config = ConfigDict(extra="ignore")
 
 
