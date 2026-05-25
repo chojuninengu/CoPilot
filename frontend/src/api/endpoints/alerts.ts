@@ -51,7 +51,7 @@ function getGraylogQueryByFilter(filter?: Partial<GraylogAlertsQuery>): GraylogA
 	const query: GraylogAlertsQuery = {
 		size: filter?.size || 10,
 		timerange: filter?.timerange || "24h",
-		index_prefix: "gl-events*"
+		index_prefix: "wazuh-alerts-*"
 	}
 
 	return query
