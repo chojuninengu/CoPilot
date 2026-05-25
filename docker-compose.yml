@@ -74,6 +74,7 @@ services:
             # Core OpenAI Configuration
             - OPENAI_API_KEY=${OPENAI_API_KEY}
             - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o}
+            - OPENAI_BASE_URL=${OPENAI_BASE_URL}
 
             # Application Configuration
             - APP_HOST=0.0.0.0
@@ -141,11 +142,23 @@ services:
             - copilot-mysql
         restart: always
 
+    velociraptor:
+        image: wlambert/velociraptor:latest
+        container_name: velociraptor
+        restart: always
+        ports:
+            - "8000:8000" # Frontend (Agents)
+            - "8889:8889" # GUI
+            - "8001:8001" # API
+        volumes:
+            - velociraptor-data:/velociraptor
+
 volumes:
     mysql-data:
     copilot-logs:
     copilot-data:
     minio-data:
+    velociraptor-data:
 
 networks:
     default:
