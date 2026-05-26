@@ -143,9 +143,19 @@ services:
         restart: always
 
     velociraptor:
-        image: wlambert/velociraptor:latest
+        image: wlambert/velociraptor:0.76.3
         container_name: velociraptor
         restart: always
+        entrypoint: ["/bin/bash", "-c"]
+        command:
+            - |
+              cp /opt/velociraptor/linux/velociraptor /usr/local/bin/velociraptor
+              chmod +x /usr/local/bin/velociraptor
+              if [ ! -f /velociraptor/server.config.yaml ]; then
+                /usr/local/bin/velociraptor config generate --merge '{"API":{"bind_address":"0.0.0.0"}, "GUI":{"bind_address":"0.0.0.0"}}' > /velociraptor/server.config.yaml
+                /usr/local/bin/velociraptor --config /velociraptor/server.config.yaml user add admin admin --role administrator
+              fi
+              /usr/local/bin/velociraptor --config /velociraptor/server.config.yaml frontend -v
         ports:
             - "8000:8000" # Frontend (Agents)
             - "8889:8889" # GUI
