@@ -337,9 +337,9 @@ async def sync_agents_velociraptor() -> SyncedAgentsResponse:
                         (
                             client
                             for client in velociraptor_clients
-                            if (client.os_info.hostname.lower() in agent.hostname.lower() or agent.hostname.lower() in client.os_info.hostname.lower())
-                            or client.client_id == agent.velociraptor_id
-                            or (client.last_ip and client.last_ip.split(":")[0] == agent.ip_address)
+                            if (client.os_info.hostname.lower() in agent.hostname.lower() or agent.hostname.lower() in client.os_info.hostname.lower()) \
+                               or client.client_id == agent.velociraptor_id \
+                               or (client.last_ip and client.last_ip.split(":")[0] == agent.ip_address)
                         ),
                         None,
                     )
